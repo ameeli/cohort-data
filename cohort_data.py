@@ -28,7 +28,7 @@ def unique_houses(filename):
 def sort_by_cohort(filename):
     """TODO: Return a list of all cohort lists, including ghosts but not instructors.
 
-    Sort students by cohort, skipping instructors.
+    sorted students by cohort, skipping instructors.
 
     Iterate over the data to create a list for each cohort. Puts ghosts into a
     separate list called "ghosts".
@@ -46,13 +46,30 @@ def sort_by_cohort(filename):
     fall_15 = []
     ghosts = []
 
-    # Code goes here
+    with open(filename) as files:
+        for line in files:
+            words = line.rstrip().split('|')
+            name = " ".join(words[:2])
+            term = words[4].split(" ")[0]
+            
+            if term == "Fall":
+                fall_15.append(name)
+            elif term == "Winter":
+                winter_16.append(name)
+            elif term == "Spring":
+                spring_16.append(name)
+            elif term == "Summer":
+                summer_16.append(name)
+            elif term == "G":
+                ghosts.append(name)
+
+        all_students.extend([fall_15, winter_16, spring_16, summer_16, ghosts])
 
     return all_students
 
 
 def hogwarts_by_house(filename):
-    """TODO: Sort students into lists by house and return all lists in one list.
+    """TODO: sorted students into lists by house and return all lists in one list.
 
     Iterate over the data to create an alphabeticaly sorted list for each
     house, and sorts students into their appropriate houses by last name. Sorts
@@ -76,6 +93,35 @@ def hogwarts_by_house(filename):
 
     # Code goes here
 
+    with open(filename) as files:
+        for line in files:
+            words = line.rstrip().split('|')
+            last_name = words[1]
+            house = words[2]
+
+            if house == 'Hufflepuff':
+                hufflepuff.append(last_name)
+            elif house == 'Gryffindor':
+                gryffindor.append(last_name)
+            elif house == 'Ravenclaw':
+                ravenclaw.append(last_name)
+            elif house == 'Slytherin':
+                slytherin.append(last_name)
+            elif house == 'Dumbledore\'s Army':
+                dumbledores_army.append(last_name)
+            elif words[-1] == 'I':
+                instructors.append(last_name)
+            elif words[-1] == 'G':
+                ghosts.append(last_name)
+
+        all_hogwarts.extend([sorted(dumbledores_army),
+            sorted(gryffindor),
+            sorted(hufflepuff),
+            sorted(ravenclaw),
+            sorted(slytherin),
+            sorted(ghosts),
+            sorted(instructors)])
+
     return all_hogwarts
 
 
@@ -93,6 +139,17 @@ def all_students_tuple_list(filename):
     """
 
     student_list = []
+
+    with open(filename) as files:
+        for line in files:
+            words = line.rstrip().split("|")
+            name = " ".join(words[:2])
+            house = words[2]
+            advisor = words[3]
+            cohort = words[4]
+            if house:
+                student_info = (name, house, advisor, cohort)
+                student_list.append(student_info)
 
     # Code goes here
 
@@ -120,6 +177,12 @@ def find_cohort_by_student_name(student_list):
     """
 
     # Code goes here
+
+    student = raw_input('Who are you looking for? ')
+
+    for item in student_list:
+        if item[0] == student:
+            return '%s was in the %s cohort.' % (item[0], item[-1])
 
     return "Student not found."
 
@@ -179,8 +242,8 @@ def find_house_members_by_student_name(student_list):
 
 #############################################################################
 # Here is some useful code to run these functions without doctests!
-
-# find_cohort_by_student_name(all_students_data)
+all_students_data = all_students_tuple_list("cohort_data.txt")
+print(find_cohort_by_student_name(all_students_data))
 # find_house_members_by_student_name(all_students_data)
 
 
@@ -190,8 +253,8 @@ def find_house_members_by_student_name(student_list):
 
 
 
-if __name__ == "__main__":
-    import doctest
-    result = doctest.testmod()
-    if result.failed == 0:
-        print("ALL TESTS PASSED")
+# if __name__ == "__main__":
+#     import doctest
+#     result = doctest.testmod()
+#     if result.failed == 0:
+#         print("ALL TESTS PASSED")
