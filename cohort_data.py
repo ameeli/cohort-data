@@ -207,9 +207,9 @@ def find_name_duplicates(filename):
     cohort_sets = []
     duplicate_names = set()
 
-    for item in cohort_lists: #gets us list of names
+    for item in cohort_lists:
         last_name_set = set()
-        for name in item: #gets each name in list
+        for name in item:
             last_name_set.add(name.split(" ")[1])
         cohort_sets.append(last_name_set)
 
@@ -244,15 +244,29 @@ def find_house_members_by_student_name(student_list):
 
      """
 
-    # Code goes here
+    student_name = raw_input('Choose a student: ')
+    student_cohort = ''
+    student_house = ''
 
-    return
+    for student in student_list:
+        if student[0] == student_name:
+            student_cohort = student[-1]
+            student_house = student[1]
+
+            print '%s was in house %s in the %s cohort.' % (student_name, student_house, student_cohort)
+            print '\nThe following students are also in their house:\n'
+
+            for student in student_list:
+                if student[1] == student_house and student[-1] == student_cohort and student_name != student[0]:
+                    print student[0] + '\n'
+
+
 
 #############################################################################
 # Here is some useful code to run these functions without doctests!
-# all_students_data = all_students_tuple_list("cohort_data.txt")
+all_students_data = all_students_tuple_list("cohort_data.txt")
 # print(find_cohort_by_student_name(all_students_data))
-# find_house_members_by_student_name(all_students_data)
+find_house_members_by_student_name(all_students_data)
 
 
 ##############################################################################
