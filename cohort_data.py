@@ -203,9 +203,17 @@ def find_name_duplicates(filename):
 
     """
 
+    cohort_lists = sort_by_cohort(filename)
+    cohort_sets = []
     duplicate_names = set()
 
-    # Code goes here
+    for item in cohort_lists: #gets us list of names
+        last_name_set = set()
+        for name in item: #gets each name in list
+            last_name_set.add(name.split(" ")[1])
+        cohort_sets.append(last_name_set)
+
+    duplicate_names = cohort_sets[0] & cohort_sets[1] & cohort_sets[2] & cohort_sets[3]
 
     return duplicate_names
 
@@ -242,8 +250,8 @@ def find_house_members_by_student_name(student_list):
 
 #############################################################################
 # Here is some useful code to run these functions without doctests!
-all_students_data = all_students_tuple_list("cohort_data.txt")
-print(find_cohort_by_student_name(all_students_data))
+# all_students_data = all_students_tuple_list("cohort_data.txt")
+# print(find_cohort_by_student_name(all_students_data))
 # find_house_members_by_student_name(all_students_data)
 
 
@@ -253,8 +261,8 @@ print(find_cohort_by_student_name(all_students_data))
 
 
 
-# if __name__ == "__main__":
-#     import doctest
-#     result = doctest.testmod()
-#     if result.failed == 0:
-#         print("ALL TESTS PASSED")
+if __name__ == "__main__":
+    import doctest
+    result = doctest.testmod()
+    if result.failed == 0:
+        print("ALL TESTS PASSED")
